@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>static.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>static.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="function"><span class="keyword">function</span><span class="params">(window)</span> {</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h3 id="deserialize">deserialize</h3>
+<p>Placed on the Object Object to allow a &#39;paramaterized&#39; string to be turned
+into a hash and returned</p>
+<p><code>param</code> {string} <code>str</code>
+<code>returns</code> {object}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Object.deserialize = <span class="function"><span class="keyword">function</span> <span class="title">deserialize</span><span class="params">(str)</span> {</span>
+  <span class="keyword">var</span> obj = {}, seg = str.split(<span class="string">'&amp;'</span>), i, s;
+  <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; seg.length; i++) {
+    <span class="keyword">if</span>(!seg[i]) <span class="keyword">continue</span>;
+    s = seg[i].split(<span class="string">'='</span>);
+    obj[s[<span class="number">0</span>]] = s[<span class="number">1</span>];
+  }
+  <span class="keyword">return</span> obj;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h3 id="extend">extend</h3>
+<p>Copy the (non-inherited) key:value pairs from <n> source objects to a single target object.</p>
+<p><code>params</code> {objects} A target object followed by <n> source objects
+<code>returns</code> {object} A single object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Object.extend = <span class="function"><span class="keyword">function</span> <span class="title">extend</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> args = Array.prototype.slice.call(arguments),
+    targ = args.shift(), i, obj, keys;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>iterate over each passed in obj remaining</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">for</span>(obj; args.length &amp;&amp; (obj = args.shift());) {
+    keys = Object.keys(obj);
+    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; keys.length; i++) {
+      targ[keys[i]] = obj[keys[i]];
+    }
+  }
+  <span class="keyword">return</span> targ;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="isobject">isObject</h3>
+<p>Ye olde toString fallback to see if a passed in argument is an object.
+Really you should test the other cases (Array.isArray for example) but this
+does &#39;even&#39; the API a little</p>
+<p><code>param</code> {*}
+<code>returns</code> {bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Object.isObject = <span class="function"><span class="keyword">function</span> <span class="title">isObject</span><span class="params">(arg)</span> {</span>
+  <span class="keyword">return</span> Object.prototype.toString.call(arg) === <span class="string">'[object Object]'</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <h3 id="serialize">serialize</h3>
+<p>Placed on the Object Object to allow a hash of data to be turned into a 
+&#39;paramaterized&#39; string and returned.</p>
+<p><code>param</code> {object} <code>obj</code>
+<code>returns</code> {string}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Object.serialize = <span class="function"><span class="keyword">function</span> <span class="title">serialize</span><span class="params">(obj)</span> {</span>
+  <span class="keyword">var</span> keys = Object.keys(obj), len = keys.length, params = [], i;
+  params.add = <span class="function"><span class="keyword">function</span><span class="params">(k, v)</span> {</span><span class="keyword">this</span>.push(window.escape(k) + <span class="string">'='</span> + window.escape(v));};
+  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) {params.add(keys[i], obj[keys[i]]);}
+  <span class="keyword">return</span> params.join(<span class="string">'&amp;'</span>).replace(<span class="regexp">/%20/g</span>, <span class="string">'+'</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h3 id="escape">escape</h3>
+<p>Placed on the String Object to Escape a string for HTML interpolation</p>
+<p><code>param</code> {string}
+<code>returns</code> {string}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>String.escape = <span class="function"><span class="keyword">function</span> <span class="title">strescape</span><span class="params">(str)</span> {</span>
+  <span class="keyword">return</span> str.replace(<span class="regexp">/&amp;/g</span>, <span class="string">'&amp;amp;'</span>).replace(<span class="regexp">/&lt;/g</span>, <span class="string">'&amp;lt;'</span>).replace(<span class="regexp">/&gt;/g</span>, <span class="string">'&amp;gt;'</span>).replace(<span class="regexp">/"/g</span>, <span class="string">'&amp;quot;'</span>).replace(<span class="regexp">/'/g</span>, <span class="string">'&amp;#x27;'</span>).replace(<span class="regexp">/\//g</span>,<span class="string">'&amp;#x2F;'</span>);
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h3 id="expand">expand</h3>
+<p>placed this on the String Object as a class method
+designed to be used with the &quot;${}&quot; placeholders like the upcoming
+native string interpolation (ES6).
+Uses the sudo.expandExpression</p>
+<p><code>param</code> {string} <code>str</code>
+<code>param</code> {object} <code>data</code>
+<code>returns</code> {string}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>String.expand = <span class="function"><span class="keyword">function</span> <span class="title">expand</span><span class="params">(str, data)</span> {</span>
+  <span class="keyword">return</span> str.replace(window._stringExpandExpression_,
+    <span class="function"><span class="keyword">function</span><span class="params">(match, key)</span> {</span><span class="keyword">return</span> data[key];});
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <h3 id="_stringexpandexpression_"><em>stringExpandExpression</em></h3>
+<p>The Regular Expression to use to search for delimiters in a String.expand operation.
+Placed on the window object this way so that you can override to taste.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="keyword">if</span>(!window._stringExpandExpression_) window._stringExpandExpression_ = <span class="regexp">/\$\{(.+?)\}/g</span>;<span class="comment">// ###debounce</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Thanks to <a href="http://underscorejs.org/">http://underscorejs.org/</a>
+Returns a function, that, as long as it continues to be invoked, will not
+be triggered. The function will be called after it stops being called for
+N milliseconds. If <code>immediate</code> is passed, trigger the function on the
+leading edge, instead of the trailing.</p>
+<p><code>param</code> {function} <code>fn</code>
+<code>param</code> {number} <code>wait</code>
+<code>param</code> {*} <code>immediate</code>
+<code>returns</code> {function}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Function.debounce = <span class="function"><span class="keyword">function</span> <span class="title">debounce</span><span class="params">(fn, wait, immediate)</span> {</span>
+  <span class="keyword">var</span> timeout;
+  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">var</span> context = <span class="keyword">this</span>, args = arguments;
+    <span class="keyword">var</span> later = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+      timeout = <span class="literal">null</span>;
+      <span class="keyword">if</span>(!immediate) fn.apply(context, args);
+    };
+    <span class="keyword">var</span> callNow = immediate &amp;&amp; !timeout;
+    window.clearTimeout(timeout);
+    timeout = window.setTimeout(later, wait);
+    <span class="keyword">if</span>(callNow) fn.apply(context, args);
+  };
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h3 id="closestparent">closestParent</h3>
+<p>Traverse the DOM upwards in heirarchy from a given DOM node checking if
+a match to a given selector is found. The matching node is returned or 
+falsey if nothing found.</p>
+<p><code>param</code> {node} <code>node</code>
+<code>param</code> {str} <code>sel</code>. A CSS selector
+<code>returns</code> {node|bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.closestParent = <span class="function"><span class="keyword">function</span> <span class="title">closestParent</span><span class="params">(node, sel)</span> {</span>
+  <span class="keyword">while</span>(node &amp;&amp; !(Element.matches(node, sel))) {
+    node = !Node.isDocument(node) &amp;&amp; node.parentNode;
+  }
+  <span class="keyword">return</span> node;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h3 id="isdocument">isDocument</h3>
+<p>Return truthy is the passed in node is the document object. Placed here on
+the Node Class Object as <code>document</code> is a <code>Node</code> type.</p>
+<p><code>param</code> {node} <code>node</code>
+<code>returns</code> {bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.isDocument = <span class="function"><span class="keyword">function</span> <span class="title">isDocument</span><span class="params">(node)</span> {</span>
+  <span class="keyword">return</span> node.nodeType === node.DOCUMENT_NODE;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="foreach-nodelist-">forEach (NodeList)</h3>
+<p>This is a, hopefully, shortlived bit of syntactic sugar for the fact that,
+at the moment, there isn&#39;t a succinct way to iterate over a NodeList such as <code>Array.forEach</code>. 
+This method will simply construct a <code>for</code> loop around the passed in NodeList and call the
+provided function with each item in it, returning the list</p>
+<p><code>param</code> {nodeList} <code>list</code>
+<code>param</code> {function} <code>fn</code>
+<code>returns</code> {nodeList} <code>list</code> </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>NodeList.forEach = <span class="function"><span class="keyword">function</span> <span class="title">nlforEach</span><span class="params">(list, fn)</span> {</span>
+  <span class="keyword">var</span> len = list.length, i;
+  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) {
+    fn(list[i]);
+  }
+  <span class="keyword">return</span> list;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <h3 id="filter-nodelist-">filter (NodeList)</h3>
+<p>Given a nodeList, push a reference to every node that passes the passed-in
+truthy-test (fn) into an array and return the array. We cannot return a 
+nodeList as this would modify the DOM.</p>
+<p><code>param</code> {nodeList} <code>list</code>
+<code>param</code> {function} <code>fn</code> 
+<code>returns</code> {array}  </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>NodeList.filter = <span class="function"><span class="keyword">function</span> <span class="title">nlfilter</span><span class="params">(list, fn)</span> {</span>
+  <span class="keyword">var</span> len = list.length, nodes = [], i;
+  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>there is no accessible constructor for a nodeList, so use childNodes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span>(fn(list[i])) nodes.push(list[i]);
+  }
+  <span class="keyword">return</span> nodes;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <h3 id="matches-element-">matches (Element)</h3>
+<p>Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
+set the useable one, if not, then return the bool.</p>
+<p><code>param</code> {element} <code>el</code>. A DOM 1 nodetype
+<code>param</code> {string}  <code>sel</code>. A CSS selector
+<code>returns</code> {bool}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Element.matches = <span class="function"><span class="keyword">function</span> <span class="title">matches</span><span class="params">(el, sel)</span> {</span>
+  <span class="keyword">if</span> (el.nodeType !== <span class="number">1</span>) <span class="keyword">return</span> <span class="literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>normalize the native selector match fn until all the prefixes are dropped</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span>(!window._normalizedMatchesSelector_) {
+    window._normalizedMatchesSelector_ = el.webkitMatchesSelector || el.mozMatchesSelector ||
+    el.msMatchesSelector || el.oMatchesSelector || el.matchesSelector;
+  }
+  <span class="keyword">return</span> window._normalizedMatchesSelector_.call(el, sel);
+};
+window._staticJsVersion_ = <span class="string">"0.1.1"</span>;
+
+}).call(<span class="keyword">this</span>, <span class="keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
