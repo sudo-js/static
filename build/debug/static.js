@@ -116,6 +116,13 @@ Node.closestParent = function closestParent(node, sel) {
   }
   return node;
 };
+// ###create
+// TODO: update with comments and specs
+Node.create = function create(str) {
+  var wrap = document.createElement('div');
+  wrap.innerHTML = str;
+  return wrap.firstElementChild;
+};
 // ###getHeight
 // As there as no unified way to measure the height of a
 // node || document we abstract that here. We do not test
@@ -147,7 +154,6 @@ Node.getWidth = function getWidth(node) {
 Node.isDocument = function isDocument(node) {
   return node.nodeType === node.DOCUMENT_NODE;
 };
-
 // ###forEach (NodeList)
 // This is a, hopefully, shortlived bit of syntactic sugar for the fact that,
 // at the moment, there isn't a succinct way to iterate over a NodeList such as `Array.forEach`.
