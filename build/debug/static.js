@@ -147,82 +147,7 @@ Node.getWidth = function getWidth(node) {
 Node.isDocument = function isDocument(node) {
   return node.nodeType === node.DOCUMENT_NODE;
 };
-// ###show
-// Makes a node visible in the DOM by modifying
-// the `display` attribute, if necessary.
 
-// `param` {node} `node`
-// `returns` {node}
-Node.show = function show(node) {
-  var oldDisplayValue = node.getAttribute('data-old-display');
-
-  // is the element already visible?
-  if (getComputedStyle(node)['display'] !== 'none') {
-    // remove display value
-    if (oldDisplayValue !== 'none') node.removeAttribute('data-old-display');
-
-  // does an old display value exist?
-  } else if (oldDisplayValue && oldDisplayValue !== 'none') {
-    node.style.display = oldDisplayValue;
-    node.removeAttribute('data-old-display');
-
-  // the element is not visible and does not have an old display value
-  } else {
-    // is the element hidden with inline styling?
-    if (node.style.display === 'none') {
-      node.setAttribute('data-old-display', node.style.display);
-      node.style.display = '';
-
-    // the element is hidden through css
-    } else {
-      node.style.display = 'block';
-    }
-  }
-};
-// ###hide
-// Makes a node invisible in the DOM by modifying
-// the `display` attribute, if necessary.
-
-// `param` {node} `node`
-// `returns` {node}
-Node.hide = function hide(node) {
-  var oldDisplayValue = node.getAttribute('data-old-display');
-
-  // is the element already hidden?
-  if (getComputedStyle(node)['display'] === 'none') {
-    if (oldDisplayValue === 'none') node.removeAttribute('data-old-display');
-
-  // does an old display value exist?
-  } else if (oldDisplayValue === 'none') {
-    node.style.display = oldDisplayValue;
-    node.removeAttribute('data-old-display');
-
-  // the element is visible and does not have an old display value
-  } else {
-    // is the element visible with inline styling?
-    if (node.style.display && node.style.display !== 'none') {
-      node.setAttribute('data-old-display', node.style.display);
-      node.style.display = 'none';
-
-    // the element is visible through css
-    } else {
-      node.style.display = 'none';
-    }
-  }
-};
-// ###toggle
-// Toggles the visibility of a node in the DOM by modifying
-// the `display` attribute, if necessary.
-
-// `param` {node} `node`
-// `returns` {node}
-Node.toggle = function toggle(node) {
-  var displayValue = getComputedStyle(node)['display'];
-
-  displayValue === 'none' ?
-    Node.show(node) :
-    Node.hide(node);
-};
 // ###forEach (NodeList)
 // This is a, hopefully, shortlived bit of syntactic sugar for the fact that,
 // at the moment, there isn't a succinct way to iterate over a NodeList such as `Array.forEach`.
@@ -273,6 +198,31 @@ NodeList.map = function nlmap(list, fn) {
 
   return result;
 };
+// ###hide
+// Makes an element invisible in the DOM by modifying
+// the `display` attribute, if necessary.
+
+// `param` {node} `node`
+// `returns` {node}
+Element.hide = function hide(node) {
+  var oldDisplayValue = node.getAttribute('data-old-display');
+  // is the element already hidden?
+  if (getComputedStyle(node)['display'] === 'none') {
+    if (oldDisplayValue === 'none') node.removeAttribute('data-old-display');
+  // does an old display value exist?
+  } else if (oldDisplayValue === 'none') {
+    node.style.display = oldDisplayValue;
+    node.removeAttribute('data-old-display');
+  // the element is visible and does not have an old display value
+  } else {
+    // is the element visible with inline styling?
+    if (node.style.display && node.style.display !== 'none') {
+      node.setAttribute('data-old-display', node.style.display);
+      node.style.display = 'none';
+    // the element is visible through css
+    } else node.style.display = 'none';
+  }
+};
 // ###matches (Element)
 // Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
 // set the useable one, if not, then return the bool.
@@ -289,6 +239,44 @@ Element.matches = function matches(el, sel) {
   }
   return window._normalizedMatchesSelector_.call(el, sel);
 };
-window._staticJsVersion_ = "0.1.1";
+// ###show
+// Makes an element visible in the DOM by modifying
+// the `display` attribute, if necessary.
+
+// `param` {node} `node`
+// `returns` {node}
+Element.show = function show(node) {
+  var oldDisplayValue = node.getAttribute('data-old-display');
+  // is the element already visible?
+  if (getComputedStyle(node)['display'] !== 'none') {
+    // remove display value
+    if (oldDisplayValue !== 'none') node.removeAttribute('data-old-display');
+  // does an old display value exist?
+  } else if (oldDisplayValue && oldDisplayValue !== 'none') {
+    node.style.display = oldDisplayValue;
+    node.removeAttribute('data-old-display');
+  // the element is not visible and does not have an old display value
+  } else {
+    // is the element hidden with inline styling?
+    if (node.style.display === 'none') {
+      node.setAttribute('data-old-display', node.style.display);
+      node.style.display = '';
+    // the element is hidden through css
+    } else node.style.display = 'block';
+  }
+};
+// ###toggle
+// Toggles the visibility of an element in the DOM by modifying
+// the `display` attribute, if necessary.
+
+// `param` {node} `node`
+// `returns` {node}
+Element.toggle = function toggle(node) {
+  var displayValue = getComputedStyle(node)['display'];
+
+  displayValue === 'none' ?
+    Element.show(node) :
+    Element.hide(node);
+};window._staticJsVersion_ = "0.1.1";
 
 }).call(this, this);
