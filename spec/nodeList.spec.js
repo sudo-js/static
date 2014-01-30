@@ -19,4 +19,13 @@ describe('Static NodeList methods', function() {
     });
     expect(filtered.length).toBe(1);
   });
+
+  it('can use NodeList.map', function() {
+    var div = document.createElement('ul'), mappedResult;
+    div.innerHTML = '<li id="item-1"></li><li id="item-2"></li>';
+    mappedResult = NodeList.map(div.querySelectorAll('li'), function(el) {
+      return el.id;
+    });
+    expect(mappedResult).toEqual(['item-1', 'item-2']);
+  });
 });
