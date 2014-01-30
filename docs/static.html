@@ -256,7 +256,7 @@ leading edge, instead of the trailing.</p>
               </div>
               <h3 id="closestparent">closestParent</h3>
 <p>Traverse the DOM upwards in heirarchy from a given DOM node checking if
-a match to a given selector is found. The matching node is returned or 
+a match to a given selector is found. The matching node is returned or
 falsey if nothing found.</p>
 <p><code>param</code> {node} <code>node</code>
 <code>param</code> {str} <code>sel</code>. A CSS selector
@@ -280,6 +280,52 @@ falsey if nothing found.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
+              <h3 id="getheight">getHeight</h3>
+<p>As there as no unified way to measure the height of a
+node || document we abstract that here. We do not test
+for <code>window</code> as that is an easy case to test for proir to calling this method.</p>
+<p><code>param</code> {*} <code>node</code>
+<code>returns</code>{number}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.getHeight = <span class="function"><span class="keyword">function</span> <span class="title">getHeight</span><span class="params">(node)</span> {</span>
+  <span class="keyword">if</span>(Node.isDocument(node)) <span class="keyword">return</span> node.documentElement.scrollHeight;
+  <span class="keyword">return</span> node.offsetHeight;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <h3 id="getwidth">getWidth</h3>
+<p>As there as no unified way to measure the width of an
+node || document we abstract that here.
+Again, we do not test for <code>window</code></p>
+<p><code>param</code> {*} <code>node</code>
+<code>returns</code>{number}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Node.getWidth = <span class="function"><span class="keyword">function</span> <span class="title">getWidth</span><span class="params">(node)</span> {</span>
+  <span class="keyword">if</span>(Node.isDocument(node)) <span class="keyword">return</span> node.documentElement.scrollWidth;
+  <span class="keyword">return</span> node.offsetWidth;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
               <h3 id="isdocument">isDocument</h3>
 <p>Return truthy is the passed in node is the document object. Placed here on
 the Node Class Object as <code>document</code> is a <code>Node</code> type.</p>
@@ -295,20 +341,20 @@ the Node Class Object as <code>document</code> is a <code>Node</code> type.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <h3 id="foreach-nodelist-">forEach (NodeList)</h3>
 <p>This is a, hopefully, shortlived bit of syntactic sugar for the fact that,
-at the moment, there isn&#39;t a succinct way to iterate over a NodeList such as <code>Array.forEach</code>. 
+at the moment, there isn&#39;t a succinct way to iterate over a NodeList such as <code>Array.forEach</code>.
 This method will simply construct a <code>for</code> loop around the passed in NodeList and call the
 provided function with each item in it, returning the list</p>
 <p><code>param</code> {nodeList} <code>list</code>
 <code>param</code> {function} <code>fn</code>
-<code>returns</code> {nodeList} <code>list</code> </p>
+<code>returns</code> {nodeList} <code>list</code></p>
 
             </div>
             
@@ -323,19 +369,19 @@ provided function with each item in it, returning the list</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <h3 id="filter-nodelist-">filter (NodeList)</h3>
 <p>Given a nodeList, push a reference to every node that passes the passed-in
-truthy-test (fn) into an array and return the array. We cannot return a 
+truthy-test (fn) into an array and return the array. We cannot return a
 nodeList as this would modify the DOM.</p>
 <p><code>param</code> {nodeList} <code>list</code>
-<code>param</code> {function} <code>fn</code> 
-<code>returns</code> {array}  </p>
+<code>param</code> {function} <code>fn</code>
+<code>returns</code> {array}</p>
 
             </div>
             
@@ -346,11 +392,11 @@ nodeList as this would modify the DOM.</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>there is no accessible constructor for a nodeList, so use childNodes</p>
 
@@ -364,11 +410,143 @@ nodeList as this would modify the DOM.</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <h3 id="map-nodelist-">map (NodeList)</h3>
+<p>Given a nodeList, push the result of each node, after performing
+a given operation (fn) on it, into an array and return the array.</p>
+<p><code>param</code> {nodeList} <code>list</code>
+<code>param</code> {function} <code>fn</code>
+<code>returns</code> {array}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>NodeList.map = <span class="function"><span class="keyword">function</span> <span class="title">nlmap</span><span class="params">(list, fn)</span> {</span>
+  <span class="keyword">var</span> len    = list.length,
+      result = [],
+      i;
+
+  <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++) {
+    result.push(fn(list[i]));
+  }
+
+  <span class="keyword">return</span> result;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <h3 id="hide">hide</h3>
+<p>Makes an element invisible in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
+<p><code>param</code> {node} <code>node</code>
+<code>returns</code> {node}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Element.hide = <span class="function"><span class="keyword">function</span> <span class="title">hide</span><span class="params">(node)</span> {</span>
+  <span class="keyword">var</span> oldDisplayValue = node.getAttribute(<span class="string">'data-old-display'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>is the element already hidden?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span> (getComputedStyle(node)[<span class="string">'display'</span>] === <span class="string">'none'</span>) {
+    <span class="keyword">if</span> (oldDisplayValue === <span class="string">'none'</span>) node.removeAttribute(<span class="string">'data-old-display'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>does an old display value exist?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  } <span class="keyword">else</span> <span class="keyword">if</span> (oldDisplayValue === <span class="string">'none'</span>) {
+    node.style.display = oldDisplayValue;
+    node.removeAttribute(<span class="string">'data-old-display'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>the element is visible and does not have an old display value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  } <span class="keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>is the element visible with inline styling?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (node.style.display &amp;&amp; node.style.display !== <span class="string">'none'</span>) {
+      node.setAttribute(<span class="string">'data-old-display'</span>, node.style.display);
+      node.style.display = <span class="string">'none'</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>the element is visible through css</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    } <span class="keyword">else</span> node.style.display = <span class="string">'none'</span>;
+  }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <h3 id="matches-element-">matches (Element)</h3>
 <p>Unfortunately the matchesSelector methods are all hidden behind prefixes ATM.
@@ -385,11 +563,11 @@ set the useable one, if not, then return the bool.</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>normalize the native selector match fn until all the prefixes are dropped</p>
 
@@ -400,8 +578,148 @@ set the useable one, if not, then return the bool.</p>
     el.msMatchesSelector || el.oMatchesSelector || el.matchesSelector;
   }
   <span class="keyword">return</span> window._normalizedMatchesSelector_.call(el, sel);
-};
-window._staticJsVersion_ = <span class="string">"0.1.1"</span>;
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <h3 id="show">show</h3>
+<p>Makes an element visible in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
+<p><code>param</code> {node} <code>node</code>
+<code>returns</code> {node}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Element.show = <span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">(node)</span> {</span>
+  <span class="keyword">var</span> oldDisplayValue = node.getAttribute(<span class="string">'data-old-display'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>is the element already visible?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="keyword">if</span> (getComputedStyle(node)[<span class="string">'display'</span>] !== <span class="string">'none'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>remove display value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (oldDisplayValue !== <span class="string">'none'</span>) node.removeAttribute(<span class="string">'data-old-display'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>does an old display value exist?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  } <span class="keyword">else</span> <span class="keyword">if</span> (oldDisplayValue &amp;&amp; oldDisplayValue !== <span class="string">'none'</span>) {
+    node.style.display = oldDisplayValue;
+    node.removeAttribute(<span class="string">'data-old-display'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>the element is not visible and does not have an old display value</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  } <span class="keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>is the element hidden with inline styling?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">if</span> (node.style.display === <span class="string">'none'</span>) {
+      node.setAttribute(<span class="string">'data-old-display'</span>, node.style.display);
+      node.style.display = <span class="string">''</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>the element is hidden through css</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    } <span class="keyword">else</span> node.style.display = <span class="string">'block'</span>;
+  }
+};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <h3 id="toggle">toggle</h3>
+<p>Toggles the visibility of an element in the DOM by modifying
+the <code>display</code> attribute, if necessary.</p>
+<p><code>param</code> {node} <code>node</code>
+<code>returns</code> {node}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>Element.toggle = <span class="function"><span class="keyword">function</span> <span class="title">toggle</span><span class="params">(node)</span> {</span>
+  <span class="keyword">var</span> displayValue = getComputedStyle(node)[<span class="string">'display'</span>];
+
+  displayValue === <span class="string">'none'</span> ?
+    Element.show(node) :
+    Element.hide(node);
+};window._staticJsVersion_ = <span class="string">"0.1.1"</span>;
 
 }).call(<span class="keyword">this</span>, <span class="keyword">this</span>);</pre></div></div>
             
